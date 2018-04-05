@@ -56,22 +56,13 @@ testData3 = data.frame(testData3)
 testData4 = predict(preProcess_range_model, testData3)
 
 # Hyper parameter tuning
-fitControl <- trainControl( method = 'cv', number = 5, savePredictions = 'final', classProbs = T, summaryFunction = twoClassSummary)
+fitControl <- trainControl( method = 'cv', number = 8, savePredictions = 'final', classProbs = T, summaryFunction = twoClassSummary)
 
 # training earth/rf/svmRadial/nnet
-model_mars2 = train(class ~., data = trainData_pre, method = 'earth', metric = 'ROC', tuneLength = 5, trControl = fitControl)
-model_mars3 = train(class ~., data = trainData_pre, method = 'rf', metric = 'ROC', tuneLength = 5, trControl = fitControl)
-model_mars4 = train(class ~., data = trainData_pre, method = 'svmRadial', metric = 'ROC', tuneLength = 5, trControl = fitControl)
-model_mars5 = train(class ~., data = trainData_pre, method = 'nnet', metric = 'ROC', tuneLength = 5, trControl = fitControl)
+model_mars5 = train(class ~., data = trainData_pre, method = 'pcaNNet', metric = 'ROC', tuneLength = 5, trControl = fitControl)
 
 #predict
-predicted_rf2 = predict(model_mars2, testData4)
-predicted_rf3 = predict(model_mars3, testData4)
-predicted_rf4 = predict(model_mars4, testData4)
 predicted_rf5 = predict(model_mars5, testData4)
 
 #create confusionMatrix
-confusionMatrix(reference = testData$class, data = predicted_rf2, mode = 'everything')
-confusionMatrix(reference = testData$class, data = predicted_rf3, mode = 'everything')
-confusionMatrix(reference = testData$class, data = predicted_rf4, mode = 'everything')
 confusionMatrix(reference = testData$class, data = predicted_rf5, mode = 'everything')
